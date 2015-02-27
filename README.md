@@ -2,10 +2,10 @@
 Ionic scaffold phonegap project to kickstart the development 
 
 Pre-requisites
-npm install -g cordova ionic
+```npm install -g cordova ionic```
 
 
 Run
-'''ionic serve'''
+```ionic serve```
 
 

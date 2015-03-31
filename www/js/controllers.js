@@ -1,77 +1,45 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function ($scope, $ionicPlatform, $ionicModal, $timeout, $cordovaToast) {
+.controller('AppCtrl', function ($scope, $ionicPlatform, $ionicModal, $timeout, $cordovaToast, $cordovaProgress, $interval, $http) {
     // Form data for the login modal
     $scope.loginData = {};
-
-    // Create the login modal that we will use later
-    $ionicModal.fromTemplateUrl('templates/login.html', {
-        scope: $scope
-    }).then(function (modal) {
-        $scope.modal = modal;
-    });
-
-    // Triggered in the login modal to close it
-    $scope.closeLogin = function () {
-        $scope.modal.hide();
+    $scope.imageUrl = "./img/default.jpg";
+    $scope.isLiveChecked = {
+        value: false
     };
 
-    // Open the login modal
-    $scope.login = function () {
+    var intervalPromise;
+    $scope.isLive = function () {
 
-        $scope.modal.show();
-
-
-        $cordovaToast
-            .show('Here is a message', 'long', 'bottom')
-            .then(function (success) {
-                // success
-            }, function (error) {
-                // error
+        if ($scope.isLiveChecked.value == true) {
+            $ionicPlatform.ready(function () {
+                $cordovaToast
+                    .show('Live!', 'long', 'bottom')
+                    .then(function (success) {
+                        intervalPromise = $interval(function () {
+                            $scope.imageUrl = "http://timmycam.conestogac.on.ca/IMAGE.JPG" + '?' + new Date().getTime();
+                            $scope.currentTime= Date.now();
+                        }, 1000, 0, true);
+                    }, function (error) {
+                        // error
+                    });
             });
 
+        } else {
 
-    };
+            $interval.cancel(intervalPromise);
+            $ionicPlatform.ready(function () {
+                $cordovaToast
+                    .show('Live off!', 'long', 'bottom')
+                    .then(function (success) {
+                        $scope.imageUrl = "http://timmycam.conestogac.on.ca/IMAGE.JPG" + '?' + new Date().getTime();
+                    }, function (error) {
+                        // error
+                    });
 
-    // Perform the login action when the user submits the login form
-    $scope.doLogin = function () {
-        console.log('Doing login', $scope.loginData);
-
-        // Simulate a login delay. Remove this and replace with your login
-        // code if using a login system
-        $timeout(function () {
-            $scope.closeLogin();
-        }, 1000);
-    };
-})
-
-.controller('PlaylistsCtrl', function ($scope) {
-    $scope.playlists = [
-        {
-            title: 'Reggae',
-            id: 1
-        },
-        {
-            title: 'Chill',
-            id: 2
-        },
-        {
-            title: 'Dubstep',
-            id: 3
-        },
-        {
-            title: 'Indie',
-            id: 4
-        },
-        {
-            title: 'Rap',
-            id: 5
-        },
-        {
-            title: 'Cowbell',
-            id: 6
+            });
         }
-  ];
-})
+    };
+    $scope.isLive();
 
-.controller('PlaylistCtrl', function ($scope, $stateParams) {});
+});

@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','ngCordova', 'starter.controllers'])
+angular.module('starter', ['ionic','ngCordova', 'starter.controllers', 'uiGmapgoogle-maps'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -20,7 +20,7 @@ angular.module('starter', ['ionic','ngCordova', 'starter.controllers'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
   $stateProvider
 
   .state('app', {
@@ -40,6 +40,28 @@ angular.module('starter', ['ionic','ngCordova', 'starter.controllers'])
     }
   })
 
+  .state('app.weather', {
+    url: "/weather",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/weather.html",
+        controller: 'AppCtrl'
+
+      }
+    }
+  })
+
+  .state('app.findTims', {
+    url: "/findTims",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/findTims.html",
+        controller: 'AppCtrl'
+
+      }
+    }
+  })
+
  
  .state('app.about', {
       url: "/about",
@@ -52,4 +74,11 @@ angular.module('starter', ['ionic','ngCordova', 'starter.controllers'])
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
+
+  uiGmapGoogleMapApiProvider.configure({
+
+      v: '3.17',
+      libraries: 'weather, geometry, visualization , places'
+  });
+
 });

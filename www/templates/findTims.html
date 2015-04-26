@@ -1,0 +1,27 @@
+<ion-view view-title="" ng-controller="AppCtrl" ng-init="getLocation()">
+    <ion-content>
+        <style>
+            .angular-google-map-container {
+                height: 100vh;
+            }
+            .goole-maps img {
+                max-width: none;
+            }
+            .map-canvas {
+                position: relative;
+            }
+        </style>
+
+        <body>
+            <div class="google-maps">
+                <ui-gmap-google-map center="map.center" zoom="map.zoom" control="map.control">
+                    <custom-control id="go-home" position="TOP_RIGHT" index="1" on-click="goHome()">
+                        <div>Go Home</div>
+                    </custom-control>
+                    <ui-gmap-markers models="map.markers" coords="'coords'" icon="'icon'">
+                    </ui-gmap-markers>
+                </ui-gmap-google-map>
+            </div>
+        </body>
+    </ion-content>
+</ion-view>

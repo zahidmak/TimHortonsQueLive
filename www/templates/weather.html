@@ -1,29 +1,30 @@
-<ion-view view-title="Today's Weather" ng-controller="AppCtrl" ng-init="getWeatherInfo()" style="background-image:url(./img/weather.jpg);">
+<style>
+   
+</style>
+<ion-view view-title="Today's Weather" ng-controller="AppCtrl" ng-init="getWeatherInfo()"  style="background-image:url(./img/weather.jpg);">
     <ion-content>
+
+
         <div class="row">
-            <img class="img-responsive" style="height:100px; margin-left: 40%;" alt="Responsive image" ng-src="{{iconUrl}}" />
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="text-center">City : {{names}}, {{sys.country}}</h3>
+            <div class="col" class="weather">
+                <h3 class="text-center">{{names}}, {{sys.country}}</h3>
+                <img class="img-responsive" style="height:200px; margin-left:130px;" ng-src="{{iconUrl}}" />
+                <h5 class="text-center">{{weather.description}}</h5>
+                <h1 class="text-center">{{temp - 273}}&#8451;</h1>
+
+
+
+                <h5 class="text-center">Wind Speed : {{windSpeed}} m/s</h5>
+                <h5 class="text-center">Humidity : {{main.humidity}}%</h5>
+                <h5 class="text-center">Pressure : {{main.pressure}}hpa</h5>
             </div>
         </div>
-        <div class="row">
-            <h4>Description : {{weather.description}}</h4>
-        </div>
-        <div class="row">
-            <h4>Tempreture : {{temp - 273}}&#8451;</h4>
-        </div>
-        <div class="row">
-            <h4>Wind Speed : {{windSpeed}} m/s</h4>
-        </div>
-        <div class="row">
-            <h4>Humidity : {{main.humidity}}%</h4>
-        </div>
-        <div class="row">
-            <h4>Pressure : {{main.pressure}}hpa</h4>
-        </div>
+        <br />
+
+
+
+
+
 
     </ion-content>
 </ion-view>

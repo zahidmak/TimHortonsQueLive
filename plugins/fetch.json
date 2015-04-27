@@ -1,0 +1,34 @@
+{
+    "org.apache.cordova.dialogs": {
+        "source": {
+            "type": "registry",
+            "id": "org.apache.cordova.dialogs"
+        }
+    },
+    "org.pbernasconi.progressindicator": {
+        "source": {
+            "type": "registry",
+            "id": "org.pbernasconi.progressindicator"
+        }
+    },
+    "nl.x-services.plugins.toast": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
+            "subdir": "."
+        }
+    },
+    "com.ionic.keyboard": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/driftyco/ionic-plugins-keyboard.git",
+            "subdir": "."
+        }
+    },
+    "org.apache.cordova.geolocation": {
+        "source": {
+            "type": "registry",
+            "id": "org.apache.cordova.geolocation"
+        }
+    }
+}

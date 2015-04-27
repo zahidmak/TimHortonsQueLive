@@ -1,10 +1,9 @@
 angular.module('starter.controllers', ['uiGmapgoogle-maps'])
 
-.controller('AppCtrl', function ($scope, $ionicPlatform, $ionicModal, $timeout, $cordovaToast, $cordovaProgress, $interval, $http, uiGmapGoogleMapApi, uiGmapIsReady) {
-
+.controller('AppCtrl', function ($scope, $ionicPlatform, $ionicModal, $timeout, $cordovaToast, $cordovaProgress, $interval, $http, uiGmapGoogleMapApi, uiGmapIsReady, $cordovaDialogs, $cordovaGeolocation) {
+    $scope.dialogShown = false;
     angular.extend($scope, {
-        init: function () {
-        },
+        init: function () {},
         map: {
             center: {
                 latitude: 0,
@@ -29,6 +28,19 @@ angular.module('starter.controllers', ['uiGmapgoogle-maps'])
 
         */
     }).init();
+    $scope.dialog = function (message, title, buttonName) {
+        $ionicPlatform.ready(function () {
+            $cordovaDialogs.alert(message, title, buttonName)
+                .then(function () {
+                    $scope.imageUrl = "./img/default.jpg" + '?' + new Date().getTime();
+                    $scope.isLiveChecked.value = false;
+                    $interval.cancel(intervalPromise);
+                    $scope.dialogShown = false;
+                });
+
+        });
+    };
+
 
     $scope.loginData = {};
     $scope.imageUrl = "./img/default.jpg";
@@ -53,53 +65,57 @@ angular.module('starter.controllers', ['uiGmapgoogle-maps'])
     };
     $scope.isLive();
 
-
-
-
     $scope.getLocation = function () {
 
-        if (navigator.geolocation) {
+        var posOptions = {
+            timeout: 10000,
+            enableHighAccuracy: false
+        };
+        $cordovaGeolocation
+            .getCurrentPosition(posOptions)
+            .then(function (position) {
 
-            navigator.geolocation.getCurrentPosition(function (pos) {
-                /*
-                var centerCoord = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-
-
-                   var map = new google.maps.Map(document.getElementById('map'), {
-                    center: centerCoord,
-                    zoom: 15
-                });
-
-                var request = {
-                    location: centerCoord,
-                    radius: 500,
-                    query: 'Tim Hortons'
-                };
-
-
-                var infowindow = new google.maps.InfoWindow();
-*/
-
-
-                $scope.map.center.latitude = pos.coords.latitude;
-                $scope.map.center.longitude = pos.coords.longitude;
+                $scope.map.center.latitude = position.coords.latitude;
+                $scope.map.center.longitude = position.coords.longitude;
                 $scope.map.markers.length = 0;
                 $scope.map.markers.push({
                     id: 0,
-                    coords: pos.coords
+                    coords: position.coords
                 });
-
-
-
                 $scope.$apply();
+                TimSearch(position);
 
-                TimSearch(pos);
-            }, null, null);
+            }, function (err) {
+                $scope.dialog("Please turn on the location from settings.", "Location off", "Ok");
+            });
 
 
-        }
+        var watchOptions = {
+            frequency: 1000,
+            timeout: 3000,
+            enableHighAccuracy: false // may cause errors if true
+        };
+
+        var watch = $cordovaGeolocation.watchPosition(watchOptions);
+        watch.then(
+            null,
+            function (err) {
+                // error
+            },
+            function (position) {
+                $scope.map.center.latitude = position.coords.latitude;
+                $scope.map.center.longitude = position.coords.longitude;
+                $scope.map.markers.length = 0;
+                $scope.map.markers.push({
+                    id: 0,
+                    coords: position.coords
+                });
+                $scope.$apply();
+                TimSearch(position);
+            });
 
 
+        watch.clearWatch();
 
 
         var TimSearch = function (pos) {
@@ -175,7 +191,7 @@ angular.module('starter.controllers', ['uiGmapgoogle-maps'])
         controlText.innerHTML = '<b>Current Location<b>'
         controlUI.appendChild(controlText);
 
-        var home = new google.maps.LatLng($scope.map.center.latitude,$scope.map.center.longitude);
+        var home = new google.maps.LatLng($scope.map.center.latitude, $scope.map.center.longitude);
 
 
         // Setup click-event listener: simply set the map to London
@@ -188,6 +204,14 @@ angular.module('starter.controllers', ['uiGmapgoogle-maps'])
 
     // when the app starts (or the refresh button is clicked) call html5 location
     $scope.getWeatherInfo = function () {
+        $cordovaGeolocation
+            .getCurrentPosition()
+            .then(function (position) {
+                sendCoordinate(position);
+
+            }, function (err) {
+                $scope.dialog("Please turn on the location from settings.", "Location off", "Ok");
+            });
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(sendCoordinate);
@@ -200,16 +224,16 @@ angular.module('starter.controllers', ['uiGmapgoogle-maps'])
     function sendCoordinate(position) {
 
         $http({
-            method: 'GET',
-            url: 'http://api.openweathermap.org/data/2.5/weather?lat=' + position.coords.latitude + '&lon=' + position.coords.longitude
-            /*url: 'http://api.openweathermap.org/data/2.5/weather?lat=' + '22.29' + '&lon=' + '-120'*/
-        })
+                method: 'GET',
+                url: 'http://api.openweathermap.org/data/2.5/weather?lat=' + position.coords.latitude + '&lon=' + position.coords.longitude
+                    /*url: 'http://api.openweathermap.org/data/2.5/weather?lat=' + '22.29' + '&lon=' + '-120'*/
+            })
             .success(function (data, status, headers, config) {
 
                 $scope.names = data.name;
                 $scope.lat = data.coord.lat;
                 $scope.lon = data.coord.lon;
-                $scope.iconUrl = '../img/' + data.weather[0].icon + '.png';
+                $scope.iconUrl = './img/' + data.weather[0].icon + '.png';
 
 
                 $scope.main = data.main;

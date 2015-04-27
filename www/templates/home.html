@@ -1,22 +1,19 @@
-
-
-
 <ion-view view-title="Timmy Line - Conestoga (Doon)" ng-controller="AppCtrl">
-  <ion-content>
-      
-        <img class="center" style="width:100%;" id="image" style="height : 274px; width : 365;" ng-src="{{imageUrl}}" />
-   <ul class="list">
+    <ion-content>
 
-  <li class="item item-toggle">
-  <blink ng-if="isLiveChecked.value==true" ng-cloak>Live</blink>  <span ng-if="isLiveChecked.value!=true" ng-cloak>Live</span> <span ng-if="isLiveChecked.value==true" ng-cloak> ({{currentTime | date:'h:mm:ss a'}})</span>
-     <label class="toggle toggle-calm">
-       <input type="checkbox"  ng-change="isLive()" ng-model="isLiveChecked.value"/>
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-  </li>
+        <img class="center" style="width:100%;" id="image" style="height : 274px; width : 365;" ng-src="{{imageUrl}}" on-error/>
+        <ul class="list">
 
-</ul>
-  </ion-content>
+            <li class="item item-toggle">
+                <blink ng-if="isLiveChecked.value==true" ng-cloak>Live</blink> <span ng-if="isLiveChecked.value!=true" ng-cloak>Live</span> <span ng-if="isLiveChecked.value==true" ng-cloak> ({{currentTime | date:'h:mm:ss a'}})</span>
+                <label class="toggle toggle-calm">
+                    <input type="checkbox" ng-change="isLive()" ng-model="isLiveChecked.value" />
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+
+        </ul>
+    </ion-content>
 </ion-view>

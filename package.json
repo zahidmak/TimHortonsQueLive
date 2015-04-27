@@ -15,6 +15,7 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "org.pbernasconi.progressindicator"
+    "org.pbernasconi.progressindicator",
+    "org.apache.cordova.dialogs"
   ]
 }

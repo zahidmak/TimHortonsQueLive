@@ -1,6 +1,8 @@
 {
     "jscodehints.detectedExclusions": [
         "D:/Projects/ionic/plugins/nl.x-services.plugins.toast/src/blackberry10/index.js",
-        "D:/Projects/ionic/www/js/controllers.js"
+        "D:/Projects/ionic/www/js/controllers.js",
+        "C:/Users/Zahid/Desktop/TimHortonsQueLive/www/js/app.js",
+        "C:/Users/Zahid/Desktop/TimHortonsQueLive/www/js/controllers.js"
     ]
 }

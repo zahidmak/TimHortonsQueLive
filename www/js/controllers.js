@@ -163,8 +163,9 @@ angular.module('starter.controllers', ['uiGmapgoogle-maps'])
                 });
 
                 google.maps.event.addListener(marker, 'click', function () {
-                    infowindow.setContent(place.name);
-                    infowindow.open(map, this);
+                  infowindow.setContent('<span style="padding: 0px; text-align:left" align="left"><h5>' + place.name + '&nbsp; &nbsp; ' + ' Rating: ' + place.rating
+                           + '</h5><p>' + place.formatted_address + '<br />' ) ;
+                    infowindow.open(map, marker);
                 });
             }
 
